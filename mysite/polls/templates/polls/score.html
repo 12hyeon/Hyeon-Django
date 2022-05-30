@@ -3,7 +3,7 @@
     <fieldset>
         <legend><h1>{{ exam.title }}</h1></legend>
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-        <h2>[ {{ stu_num }} 성적 ]</h2>
+        <h2>[ 성적 ]</h2>
         {% for s in answer %}
             <div style="margin: 20px;">
                 <div>
@@ -20,6 +20,6 @@
     </fieldset>
 
 
-    <h2>점수 : {{score}} / {{total}}점</h2>
+    <h2>점수 : {{score}} / {{exam.q_num}}점</h2>
 
     <a href="{% url 'polls:results' exam.id %}">성적 통계 보기</a>
