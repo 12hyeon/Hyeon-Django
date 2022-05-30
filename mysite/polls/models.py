@@ -27,3 +27,8 @@ class Choice(models.Model): # 학생 or 정답(num : 1)
     correct =  models.CharField(max_length=10)
     def __str__(self):
         return self.choice_text
+
+
+# Choice : choice, exam, exam_id, id, question_text
+# Exam : choice, id, pub_date, q_num, question, title
+# Question : choice, exam, exam_id, id, question_text

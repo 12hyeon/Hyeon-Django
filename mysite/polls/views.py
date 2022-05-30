@@ -17,12 +17,13 @@ def index(request):
     return render(request, 'polls/index.html', context)
 
 
-def detail(request, exam_id):
+def detail(request, exam_id, num):
     try:
         exam = Exam.objects.get(pk=exam_id)
         q_list = Question.objects.filter(exam_id=exam.id)
         context = {'exam': exam, 'q_list': q_list}
-        global stu_num, q_num # 학번 담을 변수
+        global stu_num # 학번 담을 변수
+        global q_num 
         stu_num = 3220
         q_num = 0 # 문제 번호의 시작
     except Exam.DoesNotExist:
@@ -33,6 +34,8 @@ def detail(request, exam_id):
 def store(request, exam_id): # 기존에 학생마다 각 문제에 대한 답안지를 만듬
     exam = Exam.objects.get(pk=exam_id)
     q_list =  Question.objects.filter(exam_id=exam.id)
+    global stu_num
+    global q_num
     quest = q_list[q_num]
     solution = quest.filter(num=1) # 해당 문제의 정답
 
@@ -43,11 +46,12 @@ def store(request, exam_id): # 기존에 학생마다 각 문제에 대한 답�
     
     # 학생의 답안을
     s = Choice.objects.filter(num = stu_num).filter(question = quest)
+    s.save()
     # 해당 학생에게 해당 답안지가 주어진 경우만 저장 가능
     if len(s) == 1:
         if s.question == quest:
             s.choice_text = request.POST['choice']
-    
+            s.save()
     if request.POST['choice'].strip() == solution.strip() :
         s.correct = 'O'
     else:
@@ -57,6 +61,8 @@ def store(request, exam_id): # 기존에 학생마다 각 문제에 대한 답�
     
 
 def score(request, exam_id): # 학생마다 각자의 맞는지 여부 출력
+    global stu_num
+    global q_num
     exam = Exam.objects.get(pk=exam_id)
     stu_answer = Choice.objects.filter(num = stu_num)
     s_score = 0
@@ -71,8 +77,7 @@ def score(request, exam_id): # 학생마다 각자의 맞는지 여부 출력
 
 def results(request, exam_id):
     exam = Exam.objects.get(pk=exam_id)
-    s = Choice.objects.filter() # 1개 시험지마다 학생 수
-    context = {'exam': exam, 's':s}
+    c = Choice.objects.exclude(num=1)
+    context = {'exam': exam, 'choice': c }
     return render(request, 'polls/results.html', context)
-
 
