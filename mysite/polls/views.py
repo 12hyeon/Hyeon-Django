@@ -9,7 +9,7 @@ from django.views import generic
 from django.utils import timezone
 
 from .models import Question, Choice, Exam
-stu_num = 0
+stu_num = 3220
 q_num = 0
 def index(request):
     latest_exam_list = Exam.objects.order_by('-pub_date')[:5]
