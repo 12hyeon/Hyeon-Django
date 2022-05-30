@@ -1,0 +1,28 @@
+{% csrf_token %} <!-- 위조 방지 -->
+
+    <fieldset>
+        <legend><h1>{{ exam.title }}</h1></legend>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        <h4>[ 공지사항 ]</h4>
+            <b>문제는 위에서부터 1번씩만 제출해야합니다.<br>
+            해당 시험이 가능한 학번이 아닌 경우에는 답안이 저장되지 않습니다.<br>
+            답안을 작성하지 않았어도 제출을 누르고, 다음 문제를 풀어야합니다.</br><br>
+        {% for q in q_list %}
+        <form action ="store" method="post"></form>
+            <div style="margin: 20px;">
+                <div>
+                    <h3 style="display: inline;">문제 : </h3>
+                    {{ q.question_text }}
+                </div>
+                <div>
+                    <h3 style="display: inline;">정답 여부 : </h3>
+                    <input type="input" name="choice" id="choice{{ forloop.counter }}">
+                </div>            
+                <hr>
+            </div>
+            <input  style="margin: 20px;" type="submit" value="제출">
+    </form>
+        {% endfor %}
+    </fieldset>
+
+    <a href="{% url 'polls:score' exam.id %}">성적 확인하기</a>

@@ -1,0 +1,14 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+
+<h1>시험지 리스트</h1>
+{% if latest_exam_list %}
+    <ul>
+    {% for exam in latest_exam_list %}
+        <li><a href="{% url 'polls:detail' exam.id %}">{{ exam.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}

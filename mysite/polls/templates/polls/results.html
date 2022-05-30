@@ -1,0 +1,40 @@
+{% csrf_token %} <!-- 위조 방지 -->
+<script>
+    var st_num = new Array();
+    var i = 0;
+    for (c in s) {
+        if (!(c.num in st_num))
+            st_num[i] = [c.num];
+            i++;
+    }
+    
+    let st_scores = new Array(i);
+    for (let j = 0; j<i; ++i) {
+        st_scores[j] = 0;
+    }
+</script>
+
+{% for c in s %}
+    <script>
+        if (c.num != 1 && s.correct == 'O') {
+            st_scores[st_num.indexOf(c.num)] += 1;
+        }
+    </script>
+{% endfor %}
+
+<legend><h1>{{ exam.title }}</h1></legend>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<h2>[ 성적 통계 ]</h2>
+{% for c in st_num %}
+    <div style="margin: 20px;">
+        <h3 style="display: inline; color:blue">
+            점수 : {{ st_scores }}</h3>
+        </div>            
+        <hr>
+    </div>
+{% endfor %}
+
+
+<h2>점수</h2>
+
+<a href="{% url 'polls:index' %}">다시 문제 풀기</a>
